@@ -49,50 +49,51 @@ public class FracCalc {
 		first = input.substring(0, input.indexOf(" "));
 		operator = input.substring(input.indexOf(" ") + 1, input.indexOf(" ") + 2);
 		second = input.substring(input.indexOf(" ") + 3);
-	//	
-	// fractionParsing(first, second);
+		fractionParsing(first, second);
+		String string = "whole:" + whole2 + " numerator:" + numer2 + " denominator:" + denom2;
+
 	//		
-		return second;
+		return string;
 	}
 
 	
-//
-//	public static void fractionParsing(String input1, String input2) {
-//		if (!(input1.indexOf("/") == -1)) {
-//			if (!(input1.indexOf("_") == -1)) {
-//				whole1 = Integer.parseInt(input1.substring(0, input1.indexOf("_")));
-//				numer1 = Integer.parseInt(input1.substring((input1.indexOf("_") + 1), input1.indexOf("/")));
-//				denom1 = Integer.parseInt(input1.substring(input1.indexOf("/") + 1));
-//			} else {
-//				whole1 = 0;
-//				numer1 = Integer.parseInt(input1.substring(0, input1.indexOf("/")));
-//				denom1 = Integer.parseInt(input1.substring(input1.indexOf("/") + 1));
-//			}
-//		} else {
-//			whole1 = Integer.parseInt(input1);
-//			numer1 = 0;
-//			denom1 = 1;
-//		}
-//		if (!(input2.indexOf("/") == -1)) {
-//			if (!(input2.indexOf("_") == -1)) {
-//				whole2 = Integer.parseInt(input2.substring(0, input2.indexOf("_")));
-//				numer2 = Integer.parseInt(input2.substring((input2.indexOf("_") + 1), input2.indexOf("/")));
-//				denom2 = Integer.parseInt(input2.substring(input2.indexOf("/") + 1));
-//			} else {
-//				whole2 = 0;
-//				numer2 = Integer.parseInt(input2.substring(0, input2.indexOf("/")));
-//				denom2 = Integer.parseInt(input2.substring(input2.indexOf("/") + 1));
-//			}
-//		} else {
-//			whole2 = Integer.parseInt(input2);
-//			numer2 = 0;
-//			denom2 = 1;
-//		}
+
+	public static void fractionParsing(String input1, String input2) {
+		if (!(input1.indexOf("/") == -1)) {
+			if (!(input1.indexOf("_") == -1)) {
+				whole1 = Integer.parseInt(input1.substring(0, input1.indexOf("_")));
+				numer1 = Integer.parseInt(input1.substring((input1.indexOf("_") + 1), input1.indexOf("/")));
+				denom1 = Integer.parseInt(input1.substring(input1.indexOf("/") + 1));
+			} else {
+				whole1 = 0;
+				numer1 = Integer.parseInt(input1.substring(0, input1.indexOf("/")));
+				denom1 = Integer.parseInt(input1.substring(input1.indexOf("/") + 1));
+			}
+		} else {
+			whole1 = Integer.parseInt(input1);
+			numer1 = 0;
+			denom1 = 1;
+		}
+		if (!(input2.indexOf("/") == -1)) {
+			if (!(input2.indexOf("_") == -1)) {
+				whole2 = Integer.parseInt(input2.substring(0, input2.indexOf("_")));
+				numer2 = Integer.parseInt(input2.substring((input2.indexOf("_") + 1), input2.indexOf("/")));
+				denom2 = Integer.parseInt(input2.substring(input2.indexOf("/") + 1));
+			} else {
+				whole2 = 0;
+				numer2 = Integer.parseInt(input2.substring(0, input2.indexOf("/")));
+				denom2 = Integer.parseInt(input2.substring(input2.indexOf("/") + 1));
+			}
+		} else {
+			whole2 = Integer.parseInt(input2);
+			numer2 = 0;
+			denom2 = 1;
+		}
 //		numer1 += whole1 * denom1;
 //		numer2 += whole2 * denom2;
 //		doMath();
-//
-//	}
+
+	}
 //	public static void doMath() {
 //		double finalDouble = 0;
 //		String finalExpression = "";
