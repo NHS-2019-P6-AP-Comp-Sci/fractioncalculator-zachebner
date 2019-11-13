@@ -10,7 +10,7 @@ public class FracCalc {
 	public static String first;
 	public static String operator;
 	public static String second;
-	public static String expression;
+	public static String expression = "";
 	public static int whole1;
 	public static int denom1;
 	public static int numer1;
@@ -18,6 +18,7 @@ public class FracCalc {
 	public static int denom2;
 	public static int numer2;
 	public static String finalExpression;
+
 	public static void main(String[] args) {
 		System.out.println("Welcome to the fraction calculator. ");
 		while (!expression.equals("quit")) {
@@ -50,13 +51,10 @@ public class FracCalc {
 		operator = input.substring(input.indexOf(" ") + 1, input.indexOf(" ") + 2);
 		second = input.substring(input.indexOf(" ") + 3);
 		fractionParsing(first, second);
-		String string = "whole:" + whole2 + " numerator:" + numer2 + " denominator:" + denom2;
 
-	//		
-		return string;
+		//
+		return finalExpression;
 	}
-
-	
 
 	public static void fractionParsing(String input1, String input2) {
 		if (!(input1.indexOf("/") == -1)) {
@@ -89,56 +87,105 @@ public class FracCalc {
 			numer2 = 0;
 			denom2 = 1;
 		}
-//		numer1 += whole1 * denom1;
-//		numer2 += whole2 * denom2;
-//		doMath();
+
+		numer1 += Math.abs(whole1) * denom1;
+		numer2 += Math.abs(whole2) * denom2;
+		if (whole1 < 0) {
+			numer1 = numer1 * -1;
+
+		}
+		if (whole2 < 0) {
+			numer2 = numer2 * -1;
+		}
+
+		doMath();
+	}
+
+	public static void doMath() {
+
+		if (operator.equals("+")) {
+			add();
+		} else if (operator.equals("-")) {
+			subtract();
+		} else if (operator.equals("*")) {
+			multiply();
+		} else if (operator.equals("/")) {
+			divide();
+		}
 
 	}
-//	public static void doMath() {
-//		double finalDouble = 0;
-//		String finalExpression = "";
-//		if (operator.equals("+")) {
-//			add();
-//		} else if (operator.equals("-")) {
-//			subtract();
-//		} else if (operator.equals("*")) {
-//			 multiply();
-//		} else if (operator.equals("/")) {
-//			divide();
-//		}
-//	
-//	}
-//	public static void add() {
-//		int newn = (numer1 * denom2) + (numer2 * denom1);
-//		int newd = denom2 * denom1;
-//		reduce(newn, newd);
-//	}
-//	public static void subtract() {
-//		
-//	}
-//	public static void multiply() {
-//		
-//	}
-//	public static void divide() {
-//		
-//	}
-//	public static void reduce(int newn, int newd) {
-//		int n = Math.abs(newn);
-//		int d = Math.abs(newd);
-//		int w = 0;
-//		if (!(n % d == 0)) {
-//			while (n > d) {
-//				w += 1;
-//				n -= d;
-//			}
-//		} else {
-//			w = n / d;
-//		}
-//		for (int i = 0; i < d; i++) {
-//		
-//		}
-//	}
-//	// TODO: Fill in the space below with any helper methods that you think you will
-//	// need
-//
+
+	public static void add() {
+		int newn = (numer1 * denom2) + (numer2 * denom1);
+		int newd = denom2 * denom1;
+		reduce(newn, newd);
+	}
+
+	public static void subtract() {
+		int newn = (numer1 * denom2) - (numer2 * denom1);
+		int newd = denom2 * denom1;
+		reduce(newn, newd);
+
+	}
+
+	public static void multiply() {
+		int newn = numer1 * numer2;
+		int newd = denom1 * denom2;
+		reduce(newn, newd);
+	}
+
+	public static void divide() {
+		int newn = numer1 * denom2;
+		int newd = denom1 * numer2;
+		reduce(newn, newd);
+	}
+
+	public static void reduce(int newn, int newd) {
+		int n = Math.abs(newn);
+		int d = Math.abs(newd);
+		boolean nneg = false;
+		boolean dneg = false;
+		if (newn < 0) {
+			nneg = true;
+		}
+		if (newd < 0) {
+			dneg = true;
+		}
+		int w = 0;
+		boolean underline = false;
+		boolean slash = false;
+		if (!((n % d) == 0)) {
+			while (n > d) {
+				w += 1;
+				n -= d;
+			}
+			slash = true;
+		} else {
+			w = n / d;
+		}
+		for (int i = d; i > 0; i--) {
+			if ((n % i) == 0 && (d % i) == 0) {
+				n /= i;
+				d /= i;
+			}
+		}
+		if (w > 0) {
+			underline = true;
+		}
+		if (slash) {
+			if (underline) {
+				finalExpression = w + "_" + n + "/" + d;
+			} else {
+				finalExpression = n + "/" + d;
+			}
+		} else {
+			finalExpression = Integer.toString(w);
+		}
+		if (nneg ^ dneg) {
+			finalExpression = "-" + finalExpression;
+		}
+	}
+	// TODO: Fill in the space below with any helper methods that you think you will
+	// need
+
 }
