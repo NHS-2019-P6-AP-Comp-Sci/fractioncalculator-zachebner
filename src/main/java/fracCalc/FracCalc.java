@@ -7,148 +7,208 @@ package fracCalc;
 import java.util.*;
 
 public class FracCalc {
-	public static String first;
-	public static String operator;
-	public static String second;
 	public static String expression = "";
-	public static int whole1;
-	public static int denom1;
-	public static int numer1;
-	public static int whole2;
-	public static int denom2;
-	public static int numer2;
 	public static String finalExpression;
+	public static int currentnumer;
+	public static int currentdenom;
+	public static int currentoperator;
+	public static boolean adding = false;
+	public static boolean subtracting = false;
+	public static boolean multiplying = false;
+	public static boolean dividing = false;
 
 	public static void main(String[] args) {
 		System.out.println("Welcome to the fraction calculator. ");
-		while (!expression.equals("quit")) {
+		boolean running = true;
+		while (running) {
 			Scanner input = new Scanner(System.in);
 			System.out.println("Enter your expression. (enter \"quit\" to exit.)");
 			String expressionfake = input.nextLine();
 			String expression = expressionfake.toLowerCase();
-
-			System.out.println(produceAnswer(expression));
+			if (!expression.contentEquals("quit")) {
+				System.out.println(produceAnswer(expression));
+			} else {
+				System.out.println("You have chosen to quit the program. ");
+				running = false;
+				input.close();
+			}
 		}
 		System.out.println("Goodbye!");
-		// TODO: Read the input from the user and call produceAnswer with an equation
-
 	}
 
-	// ** IMPORTANT ** DO NOT DELETE THIS FUNCTION. This function will be used to
-	// test your code
-	// This function takes a String 'input' and produces the result
-	//
-	// input is a fraction string that needs to be evaluated. For your program, this
-	// will be the user input.
-	// e.g. input ==> "1/2 + 3/4"
-	//
-	// The function should return the result of the fraction after it has been
-	// calculated
-	// e.g. return ==> "1_1/4"
 	public static String produceAnswer(String input) {
-		// TODO: Implement this function to produce the solution to the input
-		first = input.substring(0, input.indexOf(" "));
-		operator = input.substring(input.indexOf(" ") + 1, input.indexOf(" ") + 2);
-		second = input.substring(input.indexOf(" ") + 3);
-		fractionParsing(first, second);
-
-		//
+		int spaces = input.length() - input.replace(" ", "").length();
+		if (!(spaces == 0)) {
+			inputParsing(input, spaces);
+		} else {
+			finalExpression = "Invalid expression.";
+		}
 		return finalExpression;
 	}
 
-	public static void fractionParsing(String input1, String input2) {
-		if (!(input1.indexOf("/") == -1)) {
-			if (!(input1.indexOf("_") == -1)) {
-				whole1 = Integer.parseInt(input1.substring(0, input1.indexOf("_")));
-				numer1 = Integer.parseInt(input1.substring((input1.indexOf("_") + 1), input1.indexOf("/")));
-				denom1 = Integer.parseInt(input1.substring(input1.indexOf("/") + 1));
-			} else {
-				whole1 = 0;
-				numer1 = Integer.parseInt(input1.substring(0, input1.indexOf("/")));
-				denom1 = Integer.parseInt(input1.substring(input1.indexOf("/") + 1));
+//takes the input and divides it up into whole, numerators, denominators, and operators
+	public static void inputParsing(String input, int spaces) {
+		int count = 0;
+		int whole;
+		int numer;
+		int denom;
+		String newinput = " ";
+		boolean last = false;
+		// if a space, knows it is either an expression following or an operator
+		// following
+		for (int i = 0; i < input.length(); i++) {
+			String testinput = input.substring(i, i + 1);
+			// checks if an operator and tells the program which operation will be performed
+			if (testinput.contentEquals("+")) {
+				adding = true;
+				subtracting = false;
+				multiplying = false;
+				dividing = false;
+			} else if (testinput.contentEquals("-")) {
+				adding = false;
+				subtracting = true;
+				multiplying = false;
+				dividing = false;
+			} else if (testinput.contentEquals("*")) {
+				adding = false;
+				subtracting = false;
+				multiplying = true;
+				dividing = false;
+			} else if (testinput.contentEquals("/")) {
+				adding = false;
+				subtracting = false;
+				multiplying = false;
+				dividing = true;
 			}
-		} else {
-			whole1 = Integer.parseInt(input1);
-			numer1 = 0;
-			denom1 = 1;
-		}
-		if (!(input2.indexOf("/") == -1)) {
-			if (!(input2.indexOf("_") == -1)) {
-				whole2 = Integer.parseInt(input2.substring(0, input2.indexOf("_")));
-				numer2 = Integer.parseInt(input2.substring((input2.indexOf("_") + 1), input2.indexOf("/")));
-				denom2 = Integer.parseInt(input2.substring(input2.indexOf("/") + 1));
-			} else {
-				whole2 = 0;
-				numer2 = Integer.parseInt(input2.substring(0, input2.indexOf("/")));
-				denom2 = Integer.parseInt(input2.substring(input2.indexOf("/") + 1));
+			// if a number follows, parses it and turns it into a whole, numerator, and
+			// denominator
+			if (testinput.contentEquals(" ") || i == 0) {
+
+				if (!(spaces % 2 == 0) || i == 0) {
+
+					if (!(i == 0)) {
+						String substringtester = input.substring(i + 1);
+						if (substringtester.indexOf(" ") >= 0) {
+							substringtester = substringtester.substring(0, substringtester.indexOf(" "));
+						}
+						newinput = substringtester;
+					} else {
+						newinput = input.substring(0, input.indexOf(" "));
+					}
+					if (newinput.indexOf(" ") == -1) {
+						last = true;
+					}
+					if (!(newinput.indexOf("/") == -1)) {
+						if (!(newinput.indexOf("_") == -1)) {
+							whole = Integer.parseInt(newinput.substring(0, newinput.indexOf("_")));
+							numer = Integer.parseInt(newinput.substring((newinput.indexOf("_") + 1), newinput.indexOf("/")));
+							if (!last) {
+								denom = Integer.parseInt(newinput.substring(newinput.indexOf("/") + 1, newinput.indexOf(" ")));
+							} else {
+								denom = Integer.parseInt(newinput.substring(newinput.indexOf("/") + 1));
+							}
+						} else {
+							whole = 0;
+							numer = Integer.parseInt(newinput.substring(0, newinput.indexOf("/")));
+							if (!last) {
+								denom = Integer.parseInt(newinput.substring(newinput.indexOf("/") + 1, newinput.indexOf(" ")));
+							} else {
+								denom = Integer.parseInt(newinput.substring(newinput.indexOf("/") + 1));
+							}
+						}
+					} else {
+						if (newinput.indexOf(" ") == -1) {
+							whole = Integer.parseInt(newinput.substring(0));
+							numer = 0;
+							denom = 1;
+						} else {
+							whole = Integer.parseInt(newinput.substring(0, newinput.indexOf(" ")));
+							numer = 0;
+							denom = 1;
+						}
+					}
+					if (count == 0) {
+						singleUpdate(whole, numer, denom);
+					} else {
+						readyToMath(whole, numer, denom);
+					}
+					count++;
+
+				}
+				if (!(i == 0)) {
+					spaces--;
+				}
 			}
+		}
+		reduce();
+	}
+
+// keeps a running total of the numerators and denominators by setting the first numerator and denominators to public variables
+	public static void singleUpdate(int whole, int numer, int denom) {
+		if (whole >= 0) {
+			currentnumer = ((whole) * denom) + numer;
 		} else {
-			whole2 = Integer.parseInt(input2);
-			numer2 = 0;
-			denom2 = 1;
+			currentnumer = ((whole) * denom) - numer;
 		}
+		currentdenom = denom;
+	}
 
-		numer1 += Math.abs(whole1) * denom1;
-		numer2 += Math.abs(whole2) * denom2;
-		if (whole1 < 0) {
-			numer1 = numer1 * -1;
-
+// sorts out the numerators and denominators and decides what math to do with them
+	public static void readyToMath(int whole, int numer, int denom) {
+		int tempnum = 0;
+		if (whole >= 0) {
+			tempnum = ((whole) * denom) + numer;
+		} else {
+			tempnum = ((whole) * denom) - numer;
 		}
-		if (whole2 < 0) {
-			numer2 = numer2 * -1;
+		int tempden = denom;
+		if (adding) {
+			add(tempnum, tempden);
+		} else if (subtracting) {
+			subtract(tempnum, tempden);
+		} else if (multiplying) {
+			multiply(tempnum, tempden);
+		} else if (dividing) {
+			division(tempnum, tempden);
+		} else {
+			finalExpression = "ERROR: Invalid operator.";
 		}
-
-		doMath();
 	}
 
-	public static void doMath() {
-
-		if (operator.equals("+")) {
-			add();
-		} else if (operator.equals("-")) {
-			subtract();
-		} else if (operator.equals("*")) {
-			multiply();
-		} else if (operator.equals("/")) {
-			divide();
-		}
-
+// different operation methods, turn results into public variables of the running total of numerator and denominators
+	public static void add(int n, int d) {
+		currentnumer = (currentnumer * d) + (n * currentdenom);
+		currentdenom = d * currentdenom;
 	}
 
-	public static void add() {
-		int newn = (numer1 * denom2) + (numer2 * denom1);
-		int newd = denom2 * denom1;
-		reduce(newn, newd);
+	public static void subtract(int n, int d) {
+		currentnumer = (currentnumer * d) - (n * currentdenom);
+		currentdenom = d * currentdenom;
 	}
 
-	public static void subtract() {
-		int newn = (numer1 * denom2) - (numer2 * denom1);
-		int newd = denom2 * denom1;
-		reduce(newn, newd);
+	public static void multiply(int n, int d) {
+		currentnumer = currentnumer * n;
+		currentdenom = currentdenom * d;
 
 	}
 
-	public static void multiply() {
-		int newn = numer1 * numer2;
-		int newd = denom1 * denom2;
-		reduce(newn, newd);
+	public static void division(int n, int d) {
+		currentnumer = currentnumer * d;
+		currentdenom = currentdenom * n;
+
 	}
 
-	public static void divide() {
-		int newn = numer1 * denom2;
-		int newd = denom1 * numer2;
-		reduce(newn, newd);
-	}
-
-	public static void reduce(int newn, int newd) {
-		int n = Math.abs(newn);
-		int d = Math.abs(newd);
+// reduces the numerator and denominator into a mixed/whole number, 
+// and tests for some edge cases such as division by 0 and negative handling
+	public static void reduce() {
+		int n = Math.abs(currentnumer);
+		int d = Math.abs(currentdenom);
 		boolean nneg = false;
 		boolean dneg = false;
-		if (newn < 0) {
+		if (currentnumer < 0) {
 			nneg = true;
 		}
-		if (newd < 0) {
+		if (currentdenom < 0) {
 			dneg = true;
 		}
 		int w = 0;
@@ -184,8 +244,8 @@ public class FracCalc {
 		if (nneg ^ dneg) {
 			finalExpression = "-" + finalExpression;
 		}
+		if (finalExpression.contentEquals("-0")) {
+			finalExpression = "0";
+		}
 	}
-	// TODO: Fill in the space below with any helper methods that you think you will
-	// need
-
 }
